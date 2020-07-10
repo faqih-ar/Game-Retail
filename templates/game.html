@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>GR</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="{{ url_for('static',    filename='assets/img/favicon.ico')}}" />
+        <!-- Font Awesome icons (free version)-->
+        <script src="https://use.fontawesome.com/releases/v5.13.0/js/all.js" crossorigin="anonymous"></script>
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="{{ url_for('static',    filename='css/styles.css')}}" rel="stylesheet" />
+        <script>
+			window.onload = function () {
+
+			var chart1 = new CanvasJS.Chart("chartContainer1", {
+				animationEnabled: true,
+				title:{
+					text: "Player Rating For This Game",
+					horizontalAlign: "center"
+				},
+				data: [{
+					type: "doughnut",
+					startAngle: 0,
+					innerRadius: 40,
+					indexLabelFontSize: 12,
+					indexLabel: "Total {label} - {y}",
+					toolTipContent: "<b>Total </b><b>{label}:</b> {y} (#percent%)",
+					dataPoints: [
+						{ y: {{info['positive_ratings']}}, label: "Up Vote" },
+			          	{ y: {{info['negative_ratings']}}, label: "Down Vote"}
+					]
+				}]
+			});
+			chart1.render();
+			var chart2 = new CanvasJS.Chart("chartContainer2", {
+				animationEnabled: true,
+				title:{
+					text: "Average Playtime For This Game",
+					horizontalAlign: "center"
+				},
+				data: [{
+					type: "doughnut",
+					startAngle: 0,
+					innerRadius: 40,
+					indexLabelFontSize: 12,
+					indexLabel: "{label} - {y} Minute",
+					toolTipContent: "<b>Total </b><b>{label}:</b> {y} (#percent%)",
+					dataPoints: [
+						{ y: {{info['average_playtime']}}, label: "Average Playtime" },
+					]
+				}]
+			});
+			chart2.render();
+			var chart3 = new CanvasJS.Chart("chartContainer3", {
+				animationEnabled: true,
+				title:{
+					text: "Median Playtime For This Game",
+					horizontalAlign: "center"
+				},
+				data: [{
+					type: "doughnut",
+					startAngle: 0,
+					innerRadius: 40,
+					indexLabelFontSize: 12,
+					indexLabel: "{label} - {y} Minute",
+					toolTipContent: "<b>Total </b><b>{label}:</b> {y} (#percent%)",
+					dataPoints: [
+						{ y: {{info['positive_ratings']}}, label: "Median Playtime" },
+					]
+				}]
+			});
+			chart3.render();
+
+			}
+		</script>
+    </head>
+    <body id="page-top">
+        <!-- Navigation-->
+        <nav class="navbar navbar-expand-lg bg-secondary text-uppercase fixed-top" id="mainNav">
+            <div class="container">
+               <a class="navbar-brand js-scroll-trigger" href="{{ url_for('home') }}">Game Retail</a>
+                <button class="navbar-toggler navbar-toggler-right text-uppercase font-weight-bold bg-primary text-white rounded" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">Menu <i class="fas fa-bars"></i></button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="{{ url_for('home') }}">Beranda</a></li>
+                        <form class="form-inline my-2 my-lg-0" action="/" method="POST">
+                            <input class="form-control mr-sm-2" name="search" type="search" placeholder="Search Game By Name..." aria-label="Search">
+                            <input type="submit" class="btn btn-primary my-2 my-sm-0" value="Search">
+                        </form>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Masthead-->
+        	 <header class="masthead bg-primary text-white">
+        	 	<div class="text-center">
+		            <div class="container d-flex align-items-center flex-column">
+		                <h1 class="page-section-heading text-center text-uppercase text-secondary mb-0">Game Info</h1>
+		                <div class="divider-custom">
+		                    <div class="divider-custom-line"></div>
+		                    <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+		                    <div class="divider-custom-line"></div>
+		                </div>
+		            </div>
+	            </div>
+	            <div class="container">
+	            	<div class="row">
+					    <div class="col-md-6 col-lg-4 mb-5">
+					    	<div class="card">
+					    		<div class="card-body">
+					    			<img src="{{url_for('static', filename=info['img'])}}" class="rounded img-thumbnail justify-content-center" style="width: 98%">	
+					    		</div>
+					    	</div>
+					    </div>
+					    <div class="col-md-6 col-lg-8 mb-5">
+					    	<div class="card" style="">
+					    		<div class="card-body">
+					    			<form>
+							      		<div class="form-group row">
+							      			<label for="name" class="col-sm-3 col-form-label text-secondary font-weight-bold">Nama Game :</label>
+							      			<div class="col-sm-9">
+							      				<input type="text" name="" class="form-control-plaintext text-secondary text-uppercase" readonly="" id="name" value="{{info['name']}}">
+							      			</div>
+							      		</div>
+							      		<div class="form-group row">
+							      			<label for="rd" class="col-sm-3 col-form-label text-secondary font-weight-bold">Release Date :</label>
+							      			<div class="col-sm-9">
+							      				<input type="text" name="" class="form-control-plaintext text-secondary text-uppercase" readonly="" id="rd" value="{{info['release_date']}}">
+							      			</div>
+							      		</div>
+							      		<div class="form-group row">
+							      			<label for="d" class="col-sm-3 col-form-label text-secondary font-weight-bold">Developer :</label>
+							      			<div class="col-sm-9">
+							      				<input type="text" name="" class="form-control-plaintext text-secondary text-uppercase" readonly="" id="d" value="{{info['developer']}}">
+							      			</div>
+							      		</div>
+							      		<div class="form-group row">
+							      			<label for="g" class="col-sm-3 col-form-label text-secondary font-weight-bold">Genre :</label>
+							      			<div class="col-sm-9">
+							      				<input type="text" name="" class="form-control-plaintext text-secondary text-uppercase" readonly="" id="g" value="{{stp}}">
+							      			</div>
+							      		</div>
+							      		<div class="form-group row">
+							      			<label for="c" class="col-sm-3 col-form-label text-secondary font-weight-bold">Categories :</label>
+							      			<div class="col-sm-9">
+							      				<textarea class="form-control-plaintext text-secondary text-uppercase" rows="5" style="resize: none;" readonly="">{{cat}}</textarea>
+							      			</div>
+							      		</div>
+								    </form>	
+					    		</div>
+					    	</div>
+						</div>
+					</div>
+					<div class="row">
+	            		<div class="col-lg-12">
+	            			<div class="card" style="width: 100%;">
+	            				<div class="card-body">
+		            				<div class="form-group">
+		            					<h5 class="text-secondary font-weight-bold text-center">Description</h5>
+		            					<p class="form-control-plaintext text-secondary text-uppercase">{{desc}}</p>
+		            				</div>
+	            				</div>
+	            			</div>
+	            		</div>
+	            	</div>
+	            	<br>
+	            	<div class="row">
+	            		<div class="col-md-6 col-lg-4 mb-5">
+	            			<div class="card">
+	            				<div class="card-body" style="width: 100%; height: 240px;">
+	            					<div id="chartContainer1" style="width: 100%; height: 200px;"></div>
+	            				</div>
+	            			</div>
+	            		</div>
+	            		<div class="col-md-6 col-lg-4 mb-5">
+	            			<div class="card">
+	            				<div class="card-body" style="width: 100%; height: 240px;">
+	            					<div id="chartContainer2" style="width: 100%; height: 200px;"></div>
+	            				</div>
+	            			</div>
+	            		</div>
+	            		<div class="col-md-6 col-lg-4 mb-5">
+	            			<div class="card">
+	            				<div class="card-body" style="width: 100%; height: 240px;">
+	            					<div id="chartContainer3" style="width: 100%; height: 200px;"></div>
+	            				</div>
+	            			</div>
+	            		</div>
+	            	</div>
+	            </div>
+	        </header>
+        <!-- Portfolio Section-->
+        <section class="page-section portfolio" id="portfolio">
+            <div class="container">
+                <!-- Portfolio Section Heading-->
+                <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Rekomendasi Game Lainnya</h2>
+                <!-- Icon Divider-->
+                <div class="divider-custom">
+                    <div class="divider-custom-line"></div>
+                    <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+                    <div class="divider-custom-line"></div>
+                </div>
+                <!-- Portfolio Grid Items-->
+                <div class="card" style="background-color: #EEEEEE;">
+                    <div class="card-body">        
+                        <div class="row">
+                            <!-- Portfolio Item 1-->
+                            {% for g in range(1,7) %}
+                            <div class="col-md-6 col-lg-4 mb-5">
+                                <div class="card" style="">
+                                    <img class="card-img-top" src="{{url_for('static', filename=reko['img'].iloc[g])}}" alt="Card image cap">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{reko['name'].iloc[g]}}</h5>
+                                        <p class="justify-content-center"> <b>Release Date :</b> {{reko['release_date'].iloc[g]}} </p>
+                                        <center>
+                                        	<a class="btn btn-primary" href="{{ url_for('halaman_game', vargame=reko['name'].iloc[g]) }}">Lihat</a>
+                                        </center>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Copyright Section-->
+        <div class="copyright py-4 text-center text-white">
+            <div class="container"><small></small></div>
+        </div>
+        <!-- Scroll to Top Button (Only visible on small and extra-small screen sizes)-->
+        <div class="scroll-to-top d-lg-none position-fixed">
+            <a class="js-scroll-trigger d-block text-center text-white rounded" href="#page-top"><i class="fa fa-chevron-up"></i></a>
+        </div>
+        <!-- Portfolio Modals--><!-- Portfolio Modal 1-->
+        <!-- Bootstrap core JS-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
+        <!-- Third party plugin JS-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+        <!-- Contact form JS-->
+        <script src="{{ url_for('static',    filename='assets/mail/jqBootstrapValidation.js')}}"></script>
+        <script src="{{ url_for('static',    filename='assets/mail/contact_me.js')}}"></script>
+        <!-- Core theme JS-->
+        <script src="{{ url_for('static',    filename='js/scripts.js')}}"></script>
+        <script src="{{ url_for('static',    filename='js/canvasjs.min.js')}}"></script>
+    </body>
+</html>
